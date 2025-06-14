@@ -1,10 +1,20 @@
-import { useState } from "react";
-import { Link } from "react-router"; 
+import { useContext, useState } from "react";
+import { Link, useNavigate } from "react-router"; 
 import logo from "../assets/socio-logo.png";
 import { FaMoon, FaSun } from "react-icons/fa";
+import { AuthContext } from "../Provider/AuthContext";
 
-const Navbar = ({ user, onLogout }) => {
+const Navbar = () => {
   const [theme, setTheme] = useState("light");
+  const {user, logOut} = useContext(AuthContext)
+  const navigate = useNavigate()
+
+  const handleLogOut = () =>{
+    logOut()
+    .then(()=>navigate('/'))
+    .catch(err => console.error(err));
+  }
+
 
   const toggleTheme = () => {
     const newTheme = theme === "light" ? "dark" : "light";
@@ -52,7 +62,7 @@ const Navbar = ({ user, onLogout }) => {
               <li><Link to="/create">Create Event</Link></li>
               <li><Link to="/manage">Manage Events</Link></li>
               <li><Link to="/joined">Joined Events</Link></li>
-              <li><button onClick={onLogout} className="text-red-500">Logout</button></li>
+              <li><button onClick={handleLogOut} className="text-red-500">Logout</button></li>
             </ul>
           </div>
         )}

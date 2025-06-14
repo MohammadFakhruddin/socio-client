@@ -1,15 +1,36 @@
-import { Link } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import ShowHidePassword from "../Components/ShowHidePassword";
 import GoogleSignIn from "../Components/GoogleSignIn"; // Assuming you have this component
 import Lottie from "lottie-react";
 import animationData from "../../Lottie/login.json"; // Replace with your Lottie animation path
+import { useContext, useState } from "react";
+import { AuthContext } from "../Provider/AuthContext";
+import { toast } from "react-toastify";
 
 const LogIn = () => {
-  // Dummy placeholders for error and handleLogIn to avoid errors in design-only version
-  const error = null;
+
+    const [error, setError] = useState('')
+
+    const {signIn} = useContext(AuthContext)
+    const navigate = useNavigate()
+    const location = useLocation()
   const handleLogIn = (e) => {
     e.preventDefault();
-    // handle login logic here
+
+    const form = e.target;
+    const formData = new FormData(form)
+    const email = formData.get('email')
+    const password = formData.get('password')
+
+    signIn(email, password) 
+    .then (()=>{
+        toast.success('Log In Successful')
+        navigate(location.state || '/')
+    })
+    .catch((error)=>{
+        setError(error.message || 'Log In Failed')
+    })
+
   };
 
   return (

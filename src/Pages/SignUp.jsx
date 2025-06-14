@@ -1,16 +1,53 @@
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router-dom';
 import ShowHidePassword from '../Components/ShowHidePassword';
-import GoogleSignIn from '../Components/GoogleSignIn'; // Assuming you have this
+import GoogleSignIn from '../Components/GoogleSignIn';
 import Lottie from 'lottie-react';
-import animationData from '../../Lottie/signup.json'; // Put your Lottie file here
-import { useState } from 'react';
+import animationData from '../../Lottie/signup.json';
+import { useContext, useState } from 'react';
+import { AuthContext } from '../Provider/AuthContext';
+import { toast } from 'react-toastify';
 
 const SignUp = () => {
+  const { createUser, updateUser, setUser } = useContext(AuthContext);
   const [passwordError, setPasswordError] = useState(null);
+  const navigate = useNavigate();
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{6,}$/;
 
   const handleSignUp = (e) => {
     e.preventDefault();
-    // Add your sign up logic here
+    const form = e.target;
+    const formData = new FormData(form);
+
+    const name = formData.get('name');
+    const email = formData.get('email');
+    const photo = formData.get('photo');
+    const password = formData.get('password');
+
+    if (!passwordRegex.test(password)) {
+      setPasswordError('Password must include 1 uppercase, 1 lowercase, 1 special character & be 6+ characters.');
+      return;
+    }
+
+    setPasswordError(null);
+
+    createUser(email, password)
+      .then((result) => {
+        const user = result.user;
+        updateUser({ displayName: name, photoURL: photo })
+          .then(() => {
+            setUser({ ...user, displayName: name, photoURL: photo });
+            toast.success('Account Created Successfully!');
+            navigate('/');
+          })
+          .catch((err) => {
+            console.log(err);
+            setUser(user);
+          });
+      })
+      .catch((err) => {
+        console.error(err);
+        toast.error(err.message);
+      });
   };
 
   return (
@@ -29,93 +66,78 @@ const SignUp = () => {
 
         {/* Form Section */}
         <div className="flex-1 max-w-md bg-white p-10 rounded-2xl shadow-xl">
-          <h2 className="text-3xl font-bold text-center text-primary mb-8">
+          <h2 className="text-3xl font-bold text-center text-[#FF725E] mb-8">
             Sign Up Now
           </h2>
 
-          <form onSubmit={handleSignUp} className="space-y-6">
+          <form onSubmit={handleSignUp} className="space-y-5">
             {/* Name */}
             <div>
-              <label
-                htmlFor="name"
-                className="block text-sm font-medium text-gray-700 mb-2"
-              >
-                Name
-              </label>
+              <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">Name</label>
               <input
                 type="text"
                 id="name"
                 name="name"
                 required
                 placeholder="Full Name"
-                className="w-full px-4 py-3 border border-primary rounded-lg focus:outline-none "
+                className="w-full px-4 py-2 border border-[#FFD19C] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF725E]"
               />
             </div>
 
             {/* Email */}
             <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium text-gray-700 mb-2"
-              >
-                Email
-              </label>
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Email</label>
               <input
                 type="email"
                 id="email"
                 name="email"
                 required
                 placeholder="Your Email"
-                className="w-full px-4 py-3 border border-primary rounded-lg focus:outline-none "
+                className="w-full px-4 py-2 border border-[#FFD19C] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF725E]"
               />
             </div>
 
             {/* Photo URL */}
             <div>
-              <label
-                htmlFor="photo"
-                className="block text-sm font-medium text-gray-700 mb-2"
-              >
-                Photo URL
-              </label>
+              <label htmlFor="photo" className="block text-sm font-medium text-gray-700 mb-1">Photo URL</label>
               <input
                 type="text"
                 id="photo"
                 name="photo"
                 required
                 placeholder="Link to Profile Photo"
-                className="w-full px-4 py-3 border border-primary rounded-lg focus:outline-none "
+                className="w-full px-4 py-2 border border-[#FFD19C] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF725E]"
               />
             </div>
 
-            {/* Password with Show/Hide */}
+            {/* Password */}
             <ShowHidePassword />
 
             {/* Password Error */}
             {passwordError && (
-              <p className="text-red-600 text-sm mt-1 text-center">{passwordError}</p>
+              <p className="text-red-600 text-sm text-center">{passwordError}</p>
             )}
 
             {/* Submit Button */}
             <button
               type="submit"
-              className="w-full bg-primary text-white py-3 rounded-lg hover:opacity-90 transition"
+              className="w-full bg-[#FF725E] text-white py-2 rounded-lg hover:bg-opacity-90 transition"
             >
               Sign Up
             </button>
 
-            {/* OR Divider */}
-            <div className="text-center text-primary font-semibold">OR</div>
+            {/* Divider */}
+            <div className="text-center text-gray-600 font-semibold">OR</div>
 
             {/* Google Sign In */}
             <GoogleSignIn />
 
-            {/* Redirect to Login */}
+            {/* Redirect */}
             <p className="mt-6 text-center text-gray-600 text-sm">
               Already have an account?{' '}
               <Link
                 to="/auth/login"
-                className="text-primary font-bold hover:underline"
+                className="text-[#FF725E] font-bold hover:underline"
               >
                 Log In
               </Link>
