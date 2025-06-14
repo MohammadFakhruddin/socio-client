@@ -1,8 +1,8 @@
 import { Link, useLocation, useNavigate } from "react-router";
 import ShowHidePassword from "../Components/ShowHidePassword";
-import GoogleSignIn from "../Components/GoogleSignIn"; // Assuming you have this component
+import GoogleSignIn from "../Components/GoogleSignIn"; 
 import Lottie from "lottie-react";
-import animationData from "../../Lottie/login.json"; // Replace with your Lottie animation path
+import animationData from "../../Lottie/login.json"; 
 import { useContext, useState } from "react";
 import { AuthContext } from "../Provider/AuthContext";
 import { toast } from "react-toastify";

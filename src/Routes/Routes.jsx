@@ -9,6 +9,7 @@ import Error from "../Pages/Error";
 import AuthLayout from "../Layout/AuthLayout";
 import LogIn from "../Pages/LogIn";
 import SignUp from "../Pages/SignUp";
+import PrivateRoute from "../Provider/PrivateRoute";
 
 export const router = createBrowserRouter([
     {
@@ -25,15 +26,21 @@ export const router = createBrowserRouter([
             },
             {
                 path:'/create',
-                Component:CreateEvents
+                element:<PrivateRoute>
+                    <CreateEvents></CreateEvents>
+                </PrivateRoute>
             },
             {
                 path:'/manage',
-                Component:ManageEvents
+                element:<PrivateRoute>
+                    <ManageEvents></ManageEvents>
+                    </PrivateRoute>
             },
             {
                 path:'/joined',
-                Component:JoinedEvents
+                element:<PrivateRoute>
+                    <JoinedEvents></JoinedEvents>
+                    </PrivateRoute>
             },
             {
                 path:'/*',
