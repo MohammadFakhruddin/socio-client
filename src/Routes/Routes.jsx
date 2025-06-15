@@ -10,57 +10,73 @@ import AuthLayout from "../Layout/AuthLayout";
 import LogIn from "../Pages/LogIn";
 import SignUp from "../Pages/SignUp";
 import PrivateRoute from "../Provider/PrivateRoute";
+import Loading from "../Components/Loading";
+import EventDetails from "../Pages/EventDetails";
 
 export const router = createBrowserRouter([
     {
         path: '/',
         Component: MainLayout,
-        children:[
+        children: [
             {
-                path:'/',
-                Component:Home
+                path: '/',
+                Component: Home
             },
             {
-                path:'/upcoming',
-                Component:Upcoming
+                path: '/upcoming',
+                Component: Upcoming,
+                loader: () => fetch('http://localhost:5000/events'),
+                hydrateFallbackElement: <Loading></Loading>
             },
             {
-                path:'/create',
-                element:<PrivateRoute>
+                path: '/create',
+                element: <PrivateRoute>
                     <CreateEvents></CreateEvents>
                 </PrivateRoute>
             },
             {
-                path:'/manage',
-                element:<PrivateRoute>
+                path: '/manage',
+                element: <PrivateRoute>
                     <ManageEvents></ManageEvents>
-                    </PrivateRoute>
+                </PrivateRoute>
             },
             {
-                path:'/joined',
-                element:<PrivateRoute>
+                path: '/joined',
+                element: <PrivateRoute>
                     <JoinedEvents></JoinedEvents>
-                    </PrivateRoute>
+                </PrivateRoute>
             },
             {
-                path:'/*',
-                Component:Error
+
+                path: '/details/:id',
+                element: <PrivateRoute>
+                    <EventDetails></EventDetails>
+                </PrivateRoute>,
+                loader:({params})=>fetch(`http://localhost:5000/events/${params.id}`)
+
+
+
+            }
+            ,
+            {
+                path: '/*',
+                Component: Error
             },
             {
-                path:'/auth',
-                Component:AuthLayout,
-                children:[
+                path: '/auth',
+                Component: AuthLayout,
+                children: [
                     {
-                        path:'/auth/login',
-                        Component:LogIn
+                        path: '/auth/login',
+                        Component: LogIn
                     },
                     {
-                        path:'/auth/signup',
-                        Component:SignUp
+                        path: '/auth/signup',
+                        Component: SignUp
                     }
                 ]
             }
         ]
     }
-    
+
 ])
