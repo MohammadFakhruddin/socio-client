@@ -15,29 +15,53 @@ const SignUp = () => {
 
   const handleSignUp = (e) => {
     e.preventDefault();
+    setPasswordError(null); // Reset previous error
+
     const form = e.target;
     const formData = new FormData(form);
 
-    const name = formData.get('name');
-    const email = formData.get('email');
-    const photo = formData.get('photo');
-    const password = formData.get('password');
+    const name = formData.get("name")?.trim();
+    const email = formData.get("email")?.trim();
+    const photo = formData.get("photo")?.trim();
+    const password = formData.get("password");
 
-    if (!passwordRegex.test(password)) {
-      setPasswordError('Password must include 1 uppercase, 1 lowercase, 1 special character & be 6+ characters.');
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    // Validate name
+    if (!name) {
+      setPasswordError("Name is required.");
       return;
     }
 
-    setPasswordError(null);
+    // Validate email
+    if (!email || !emailRegex.test(email)) {
+      setPasswordError("Please enter a valid email address.");
+      return;
+    }
 
+    // Validate photo URL
+    if (!photo || !photo.startsWith("http")) {
+      setPasswordError("Please provide a valid photo URL.");
+      return;
+    }
+
+    // Validate password
+    if (!passwordRegex.test(password)) {
+      setPasswordError(
+        "Password must include 1 uppercase, 1 lowercase, 1 special character & be 6+ characters."
+      );
+      return;
+    }
+
+    // If all validations pass
     createUser(email, password)
       .then((result) => {
         const user = result.user;
         updateUser({ displayName: name, photoURL: photo })
           .then(() => {
             setUser({ ...user, displayName: name, photoURL: photo });
-            toast.success('Account Created Successfully!');
-            navigate('/');
+            toast.success("Account Created Successfully!");
+            navigate("/");
           })
           .catch((err) => {
             console.log(err);
@@ -49,6 +73,7 @@ const SignUp = () => {
         toast.error(err.message);
       });
   };
+
 
   return (
     <section className="min-h-screen bg-[#FFF8F5] flex items-center justify-center px-4 my-20">

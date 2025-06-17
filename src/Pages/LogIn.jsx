@@ -14,24 +14,37 @@ const LogIn = () => {
     const {signIn} = useContext(AuthContext)
     const navigate = useNavigate()
     const location = useLocation()
-  const handleLogIn = (e) => {
-    e.preventDefault();
+const handleLogIn = (e) => {
+  e.preventDefault();
+  setError("");
 
-    const form = e.target;
-    const formData = new FormData(form)
-    const email = formData.get('email')
-    const password = formData.get('password')
+  const form = e.target;
+  const formData = new FormData(form);
+  const email = formData.get("email")?.trim();
+  const password = formData.get("password");
 
-    signIn(email, password) 
-    .then (()=>{
-        toast.success('Log In Successful')
-        navigate(location.state || '/')
+  // Email format check
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!email || !emailRegex.test(email)) {
+    setError("Please enter a valid email address.");
+    return;
+  }
+
+  // Password validation
+  if (!password || password.length < 6) {
+    setError("Password must be at least 6 characters.");
+    return;
+  }
+
+  signIn(email, password)
+    .then(() => {
+      toast.success("Log In Successful");
+      navigate(location.state || "/");
     })
-    .catch((error)=>{
-        setError(error.message || 'Log In Failed')
-    })
-
-  };
+    .catch((error) => {
+      setError(error.message || "Login failed. Please try again.");
+    });
+};
 
   return (
     <section className="min-h-screen bg-[#FFF8F5] flex items-center justify-center px-4">

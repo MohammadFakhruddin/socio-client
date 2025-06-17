@@ -23,14 +23,21 @@ const UpdateEvent = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async e => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
       const { title, description, eventType, thumbnail, location, date } = formData;
 
+      // Check for empty fields
       if (!title || !description || !eventType || !thumbnail || !location || !date) {
         toast.error("All fields are required");
+        return;
+      }
+
+      // Description must be at least 30 characters
+      if (description.trim().length < 30) {
+        toast.error("Description must be at least 30 characters long");
         return;
       }
 
@@ -52,8 +59,8 @@ const UpdateEvent = () => {
   };
 
   if (event.creatorEmail !== user?.email) {
-  return <p className="text-red-600 text-center mt-10">You are not authorized to update this event.</p>;
-}
+    return <p className="text-red-600 text-center mt-10">You are not authorized to update this event.</p>;
+  }
 
 
   return (
@@ -70,11 +77,13 @@ const UpdateEvent = () => {
         />
         <textarea
           name="description"
-          placeholder="Description"
-          value={formData.description}
-          onChange={handleChange}
-          className="border p-2 rounded"
-        />
+          required
+          rows="3"
+          minLength={30}
+          placeholder="Write event details (min 30 characters)"
+          className="textarea textarea-bordered w-full py-2"
+        ></textarea>
+
         <input
           type="text"
           name="eventType"

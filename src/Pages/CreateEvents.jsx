@@ -18,9 +18,17 @@ const CreateEvents = () => {
     const formData = new FormData(form);
     const eventData = Object.fromEntries(formData.entries());
 
- 
+    // Convert description to trimmed string
+    const description = eventData.description?.trim();
+
+    // Validate future date
     if (!selectedDate || selectedDate < new Date()) {
       return toast.error("Please select a valid future date.");
+    }
+
+    // Validate description length
+    if (!description || description.length < 30) {
+      return toast.error("Description must be at least 30 characters.");
     }
 
     eventData.date = selectedDate;
@@ -47,6 +55,7 @@ const CreateEvents = () => {
         toast.error("Something went wrong");
       });
   };
+
 
   return (
     <section className="bg-secondary py-12 px-4 min-h-screen flex items-center">
@@ -86,8 +95,9 @@ const CreateEvents = () => {
               <textarea
                 name="description"
                 required
+                minLength={30}
                 rows="3"
-                placeholder="Write event details"
+                placeholder="Write event details (minimum 30 characters)"
                 className="textarea textarea-bordered w-full py-2"
               ></textarea>
             </div>
