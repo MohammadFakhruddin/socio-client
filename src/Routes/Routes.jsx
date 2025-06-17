@@ -12,6 +12,7 @@ import SignUp from "../Pages/SignUp";
 import PrivateRoute from "../Provider/PrivateRoute";
 import Loading from "../Components/Loading";
 import EventDetails from "../Pages/EventDetails";
+import UpdateEvent from "../Pages/UpdateEvent";
 
 export const router = createBrowserRouter([
     {
@@ -52,8 +53,20 @@ export const router = createBrowserRouter([
                 element: <PrivateRoute>
                     <EventDetails></EventDetails>
                 </PrivateRoute>,
-                loader:({params})=>fetch(`http://localhost:5000/events/${params.id}`)
+                loader: ({ params }) => fetch(`http://localhost:5000/events/${params.id}`),
+                hydrateFallbackElement: <Loading></Loading>
 
+
+
+            }
+            ,
+            {
+                path: '/update/:id',
+                element: <PrivateRoute>
+                    <UpdateEvent></UpdateEvent>
+                </PrivateRoute>,
+                loader: ({ params }) => fetch(`http://localhost:5000/events/${params.id}`),
+                hydrateFallbackElement: <Loading></Loading>
 
 
             }

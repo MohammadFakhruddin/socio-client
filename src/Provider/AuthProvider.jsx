@@ -2,6 +2,7 @@ import { createUserWithEmailAndPassword, GoogleAuthProvider, onAuthStateChanged,
 import { AuthContext } from "./AuthContext";
 import auth from "../Firebase/firebase.config";
 import { useEffect, useState } from "react";
+import axios from "axios";
 
 const AuthProvider = ({ children }) => {
 
@@ -39,6 +40,17 @@ const AuthProvider = ({ children }) => {
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
             setUser(currentUser)
             setLoading(false)
+            if(currentUser?.email){
+                const userData = {email:currentUser.email}
+                axios.post('http://localhost:5000/jwt',userData,{
+                    withCredentials:true
+                })
+                .then(res => {
+                    console.log('token after jwt',res.data);
+                    
+                })
+                .catch(error => console.log(error))
+            }
 
         })
 

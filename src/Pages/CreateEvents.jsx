@@ -37,7 +37,7 @@ const CreateEvents = () => {
       .then((data) => {
         if (data.insertedId) {
           toast.success("Event Added Successfully");
-          navigate("/upcoming-events");
+          navigate("/upcoming");
         } else {
           toast.error("Failed to add event");
         }

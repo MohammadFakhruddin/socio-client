@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { AuthContext } from "../Provider/AuthContext";
 import logo from "../assets/socio-logo.png";
@@ -9,10 +9,18 @@ const Navbar = () => {
   const { user, logOut } = useContext(AuthContext);
   const navigate = useNavigate();
 
+  // Load saved theme from localStorage
+  useEffect(() => {
+    const storedTheme = localStorage.getItem("theme") || "light";
+    setTheme(storedTheme);
+    document.documentElement.setAttribute("data-theme", storedTheme);
+  }, []);
+
   const toggleTheme = () => {
     const newTheme = theme === "light" ? "dark" : "light";
-    document.documentElement.setAttribute("data-theme", newTheme);
     setTheme(newTheme);
+    localStorage.setItem("theme", newTheme);
+    document.documentElement.setAttribute("data-theme", newTheme);
   };
 
   const handleLogOut = () => {
@@ -30,10 +38,7 @@ const Navbar = () => {
       </div>
 
       <div className="flex-none flex items-center gap-4">
-        <Link
-          to="/upcoming"
-          className="btn btn-ghost text-sm text-secondary"
-        >
+        <Link to="/upcoming" className="btn btn-ghost text-sm text-secondary">
           Upcoming Events
         </Link>
 
@@ -49,31 +54,27 @@ const Navbar = () => {
             <Link to="/auth/login" className="btn btn-sm btn-secondary text-white">
               Login
             </Link>
-            <Link to="/auth/signup" className="btn btn-sm btn-outline text-white border-white hover:bg-white hover:text-secondary">
+            <Link
+              to="/auth/signup"
+              className="btn btn-sm btn-outline text-white border-white hover:bg-white hover:text-secondary"
+            >
               Sign Up
             </Link>
           </div>
         ) : (
           <div className="dropdown dropdown-end relative flex items-center gap-2">
-            {/* Profile Picture */}
             <div tabIndex={0} className="avatar cursor-pointer">
               <div className="w-10 rounded-full ring ring-secondary ring-offset-base-100 ring-offset-2">
                 <img
-                  src={
-                    user.photoURL ||
-                    "https://i.ibb.co/MBtjqXQ/default-avatar.png"
-                  }
+                  src={user.photoURL || "https://i.ibb.co/MBtjqXQ/default-avatar.png"}
                   alt="User Avatar"
                 />
               </div>
             </div>
-
-            {/* Name beside image */}
             <span className="text-sm font-semibold text-white hidden sm:block">
               {user.displayName || "Anonymous"}
             </span>
 
-            {/* Dropdown Menu */}
             <ul
               tabIndex={0}
               className="dropdown-content mt-[200px] p-2 shadow bg-base-100 rounded-box w-52"
@@ -92,7 +93,6 @@ const Navbar = () => {
             </ul>
           </div>
         )}
-
       </div>
     </div>
   );
