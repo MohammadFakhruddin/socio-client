@@ -11,7 +11,7 @@ const EventDetails = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get(`http://localhost:5000/events/${id}`)
+    axios.get(`https://socio-server.vercel.app/events/${id}`)
       .then(res => {
         setEvent(res.data);
         setLoading(false);
@@ -32,7 +32,7 @@ const EventDetails = () => {
       userEmail: user.email,
     };
 
-    axios.post("http://localhost:5000/joined-events", joinedEvent)
+    axios.post("https://socio-server.vercel.app/joined-events", joinedEvent)
       .then(res => {
         if (res.status === 201) {
           toast.success("Successfully joined the event!");

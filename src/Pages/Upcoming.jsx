@@ -17,7 +17,7 @@ const UpcomingEvents = () => {
       if (eventType !== "all") params.eventType = eventType;
       if (searchTerm.trim()) params.search = searchTerm.trim();
 
-      const res = await axios.get("http://localhost:5000/events", { params });
+      const res = await axios.get("https://socio-server.vercel.app/events", { params });
       setAllEvents(res.data);
     } catch (error) {
   

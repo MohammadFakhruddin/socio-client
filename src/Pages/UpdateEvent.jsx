@@ -41,7 +41,7 @@ const UpdateEvent = () => {
         return;
       }
 
-      const res = await axios.put(`http://localhost:5000/events/${event._id}`, {
+      const res = await axios.put(`https://socio-server.vercel.app/events/${event._id}`, {
         ...formData,
         creatorEmail: user?.email,
       });

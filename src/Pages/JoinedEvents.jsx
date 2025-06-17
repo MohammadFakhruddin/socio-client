@@ -9,7 +9,7 @@ const JoinedEvents = () => {
   useEffect(() => {
     if (!user?.email) return;
 
-    fetch(`http://localhost:5000/joined-events/${user.email}`)
+    fetch(`https://socio-server.vercel.app/joined-events/${user.email}`)
       .then(res => res.json())
       .then(data => {
         setEvents(data);

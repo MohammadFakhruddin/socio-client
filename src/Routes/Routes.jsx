@@ -26,7 +26,7 @@ export const router = createBrowserRouter([
             {
                 path: '/upcoming',
                 Component: Upcoming,
-                loader: () => fetch('http://localhost:5000/events'),
+                loader: () => fetch('https://socio-server.vercel.app/events'),
                 hydrateFallbackElement: <Loading></Loading>
             },
             {
@@ -53,7 +53,7 @@ export const router = createBrowserRouter([
                 element: <PrivateRoute>
                     <EventDetails></EventDetails>
                 </PrivateRoute>,
-                loader: ({ params }) => fetch(`http://localhost:5000/events/${params.id}`),
+                loader: ({ params }) => fetch(`https://socio-server.vercel.app/events/${params.id}`),
                 hydrateFallbackElement: <Loading></Loading>
 
 
@@ -65,7 +65,7 @@ export const router = createBrowserRouter([
                 element: <PrivateRoute>
                     <UpdateEvent></UpdateEvent>
                 </PrivateRoute>,
-                loader: ({ params }) => fetch(`http://localhost:5000/events/${params.id}`),
+                loader: ({ params }) => fetch(`https://socio-server.vercel.app/events/${params.id}`),
                 hydrateFallbackElement: <Loading></Loading>
 
 

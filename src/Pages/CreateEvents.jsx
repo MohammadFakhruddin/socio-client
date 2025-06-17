@@ -34,7 +34,7 @@ const CreateEvents = () => {
     eventData.date = selectedDate;
     eventData.creatorEmail = user?.email;
 
-    fetch("http://localhost:5000/events", {
+    fetch("https://socio-server.vercel.app/events", {
       method: "POST",
       headers: {
         "content-type": "application/json",

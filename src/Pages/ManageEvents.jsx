@@ -13,7 +13,7 @@ const ManageEvents = () => {
     if (!user?.email) return;
 
     axios
-      .get(`http://localhost:5000/events?creatorEmail=${user.email}`)
+      .get(`https://socio-server.vercel.app/events?creatorEmail=${user.email}`)
       .then((res) => {
         setEvents(res.data);
         setLoading(false);
@@ -32,7 +32,7 @@ const ManageEvents = () => {
     if (!window.confirm("Are you sure you want to delete this event?")) return;
 
     axios
-      .delete(`http://localhost:5000/events/${eventId}`, {
+      .delete(`https://socio-server.vercel.app/events/${eventId}`, {
         data: { creatorEmail: user.email },
       })
       .then((res) => {
