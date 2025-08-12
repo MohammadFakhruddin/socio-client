@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useRef } from "react";
 import { Link, useNavigate } from "react-router";
 import { AuthContext } from "../Provider/AuthContext";
 import logo from "../assets/socio-logo.png";
@@ -8,12 +8,25 @@ const Navbar = () => {
   const [theme, setTheme] = useState("light");
   const { user, logOut } = useContext(AuthContext);
   const navigate = useNavigate();
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
-  // Load saved theme from localStorage
+  // Load saved theme
   useEffect(() => {
     const storedTheme = localStorage.getItem("theme") || "light";
     setTheme(storedTheme);
     document.documentElement.setAttribute("data-theme", storedTheme);
+  }, []);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setDropdownOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   const toggleTheme = () => {
@@ -30,7 +43,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className="navbar bg-primary shadow px-4">
+    <div className="navbar bg-primary shadow px-4 fixed top-0 left-0 w-full z-50">
       <div className="flex-1">
         <Link to="/" className="flex items-center gap-2">
           <img src={logo} alt="Socio Logo" className="h-10" />
@@ -38,10 +51,27 @@ const Navbar = () => {
       </div>
 
       <div className="flex-none flex items-center gap-4">
+        {/* Always visible */}
         <Link to="/upcoming" className="btn btn-ghost text-sm text-secondary">
           Upcoming Events
         </Link>
 
+        {/* Protected links for logged-in users */}
+        {user && (
+          <>
+            <Link to="/create" className="btn btn-ghost text-sm text-secondary">
+              Create Event
+            </Link>
+            <Link to="/manage" className="btn btn-ghost text-sm text-secondary">
+              Manage Events
+            </Link>
+            <Link to="/joined" className="btn btn-ghost text-sm text-secondary">
+              Joined Events
+            </Link>
+          </>
+        )}
+
+        {/* Theme toggle */}
         <button
           onClick={toggleTheme}
           className="btn btn-sm btn-circle bg-secondary text-white"
@@ -62,8 +92,12 @@ const Navbar = () => {
             </Link>
           </div>
         ) : (
-          <div className="dropdown dropdown-end relative flex items-center gap-2">
-            <div tabIndex={0} className="avatar cursor-pointer">
+          // Avatar Dropdown
+          <div className="relative" ref={dropdownRef}>
+            <div
+              className="avatar cursor-pointer flex items-center gap-2"
+              onClick={() => setDropdownOpen(!dropdownOpen)}
+            >
               <div className="w-10 rounded-full ring ring-secondary ring-offset-base-100 ring-offset-2">
                 <img
                   src={user.photoURL || "https://i.ibb.co/MBtjqXQ/default-avatar.png"}
@@ -71,26 +105,20 @@ const Navbar = () => {
                 />
               </div>
             </div>
-            <span className="text-sm font-semibold text-white hidden sm:block">
-              {user.displayName || "Anonymous"}
-            </span>
 
-            <ul
-              tabIndex={0}
-              className="dropdown-content mt-[200px] p-2 shadow bg-base-100 rounded-box w-52"
-            >
-              <li><Link to="/create">Create Event</Link></li>
-              <li><Link to="/manage">Manage Events</Link></li>
-              <li><Link to="/joined">Joined Events</Link></li>
-              <li>
+            {dropdownOpen && (
+              <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg border border-gray-200 z-50">
+                <div className="px-4 py-2 text-gray-800 font-semibold border-b">
+                  {user.displayName || "Anonymous"}
+                </div>
                 <button
                   onClick={handleLogOut}
-                  className="text-red-500 hover:text-red-700"
+                  className="w-full text-left px-4 py-2 text-red-500 hover:bg-red-100"
                 >
                   Logout
                 </button>
-              </li>
-            </ul>
+              </div>
+            )}
           </div>
         )}
       </div>

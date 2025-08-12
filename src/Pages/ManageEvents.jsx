@@ -49,7 +49,7 @@ const ManageEvents = () => {
   if (loading) return <p className="text-center mt-10">Loading your events...</p>;
 
   if (!events.length)
-    return <p className="text-center mt-10">You haven't created any events yet.</p>;
+    return <p className="text-center justify-center items-center mt-10">You haven't created any events yet.</p>;
 
   return (
     <div className="max-w-4xl mx-auto p-6">
