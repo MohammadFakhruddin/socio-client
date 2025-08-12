@@ -3,7 +3,7 @@ import animationData from '../../Lottie/mailbox.json';
 
 const Newsletter = () => {
   return (
-    <section className="bg-secondary py-12 px-4">
+    <section className="bg-secondary py-16 px-4">
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-10 text-white">
         {/* Lottie Section */}
         <div className="flex-1 flex justify-center">
