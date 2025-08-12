@@ -19,7 +19,7 @@ const Footer = () => {
 
         {/* Quick Links */}
         <div>
-          <h4 className="footer-title text-secondary">Quick Links</h4>
+          <h4 className="footer-title text-primary">Quick Links</h4>
           <ul className="text-sm space-y-1">
             <li><Link to="/" className="link link-hover">Home</Link></li>
             <li><Link to="/events" className="link link-hover">Upcoming Events</Link></li>
@@ -30,14 +30,14 @@ const Footer = () => {
 
         {/* Contact Info */}
         <div>
-          <h4 className="footer-title text-secondary">Contact</h4>
+          <h4 className="footer-title text-primary">Contact</h4>
           <p className="text-sm">Email: <a href="mailto:support@socioserve.org" className="link">support@socioserve.org</a></p>
           <p className="text-sm">Location: Dhaka, Bangladesh</p>
         </div>
 
         {/* Social Media */}
         <div>
-          <h4 className="footer-title text-secondary">Follow Us</h4>
+          <h4 className="footer-title text-parimary">Follow Us</h4>
           <div className="flex gap-4 mt-2">
             <a href="#" className="btn btn-sm btn-circle bg-primary text-white"><FaFacebookF /></a>
             <a href="#" className="btn btn-sm btn-circle bg-primary text-white"><FaTwitter /></a>

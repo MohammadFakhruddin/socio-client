@@ -1,10 +1,19 @@
 import Navbar from '../Components/Navbar';
 import { Outlet } from 'react-router';
 import Footer from '../Components/Footer';
+import { useContext } from 'react';
+import Loading from '../Components/Loading';
+import { AuthContext } from '../Provider/AuthContext';
 
 const MainLayout = () => {
-    return (
-         <div className="flex flex-col min-h-screen">
+  const { loading } = useContext(AuthContext); 
+
+  if (loading) {
+    return <Loading />;
+  }
+
+  return (
+    <div className="flex flex-col min-h-screen">
       <div className="mb-6">
         <Navbar />
       </div>
@@ -17,7 +26,7 @@ const MainLayout = () => {
         <Footer />
       </div>
     </div>
-    );
+  );
 };
 
 export default MainLayout;

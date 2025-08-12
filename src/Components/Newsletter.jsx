@@ -15,10 +15,10 @@ const Newsletter = () => {
 
         {/* Text + Form Section */}
         <div className="flex-1 text-center md:text-left">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-primary">
             Stay Connected with Socio
           </h2>
-          <p className="text-base md:text-lg mb-6">
+          <p className="text-base md:text-lg mb-6 text-primary">
             Subscribe to our newsletter to get updates on upcoming social development events near you!
           </p>
           <form className="flex flex-col md:flex-row items-center md:items-start gap-4">

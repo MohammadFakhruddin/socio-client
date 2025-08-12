@@ -29,12 +29,12 @@ const Navbar = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const toggleTheme = () => {
-    const newTheme = theme === "light" ? "dark" : "light";
-    setTheme(newTheme);
-    localStorage.setItem("theme", newTheme);
-    document.documentElement.setAttribute("data-theme", newTheme);
-  };
+  // const toggleTheme = () => {
+  //   const newTheme = theme === "light" ? "dark" : "light";
+  //   setTheme(newTheme);
+  //   localStorage.setItem("theme", newTheme);
+  //   document.documentElement.setAttribute("data-theme", newTheme);
+  // };
 
   const handleLogOut = () => {
     logOut()
@@ -52,32 +52,32 @@ const Navbar = () => {
 
       <div className="flex-none flex items-center gap-4">
         {/* Always visible */}
-        <Link to="/upcoming" className="btn btn-ghost text-sm text-secondary">
+        <Link to="/upcoming" className="btn btn-ghost text-sm text-secondary hover:text-primary">
           Upcoming Events
         </Link>
 
         {/* Protected links for logged-in users */}
         {user && (
           <>
-            <Link to="/create" className="btn btn-ghost text-sm text-secondary">
+            <Link to="/create" className="btn btn-ghost text-sm text-secondary hover:text-primary">
               Create Event
             </Link>
-            <Link to="/manage" className="btn btn-ghost text-sm text-secondary">
+            <Link to="/manage" className="btn btn-ghost text-sm text-secondary hover:text-primary">
               Manage Events
             </Link>
-            <Link to="/joined" className="btn btn-ghost text-sm text-secondary">
+            <Link to="/joined" className="btn btn-ghost text-sm text-secondary hover:text-primary">
               Joined Events
             </Link>
           </>
         )}
 
         {/* Theme toggle */}
-        <button
+        {/* <button
           onClick={toggleTheme}
           className="btn btn-sm btn-circle bg-secondary text-white"
         >
           {theme === "light" ? <FaMoon /> : <FaSun />}
-        </button>
+        </button> */}
 
         {!user ? (
           <div className="flex gap-2">
